@@ -1,0 +1,80 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Demo from "../../components/Demo.astro";
+import { lessons } from "../../lib/course";
+export function getStaticPaths() {
+  return lessons.map((lesson, index) => ({
+    params: { slug: lesson.slug },
+    props: { lesson, index },
+  }));
+}
+const { lesson, index } = Astro.props;
+const files = import.meta.glob("../../content/lessons/*.md", { eager: true });
+const { Content } = files[`../../content/lessons/${lesson.slug}.md`] as {
+  Content: import("astro").MarkdownInstance<Record<string, unknown>>["Content"];
+};
+---
+
+<Layout title={lesson.title}>
+  <div class="lesson-shell">
+    <aside class="toc">
+      <a href="/#course" class="eyebrow">
+        THE FIELD GUIDE
+      </a>
+      <nav aria-label="Lesson navigation">
+        {lessons.map((l, i) => (
+          <a
+            aria-current={i === index ? "page" : undefined}
+            href={`/lessons/${l.slug}/`}
+          >
+            <span>{String(i + 1).padStart(2, "0")}</span>
+            {l.title}
+          </a>
+        ))}
+      </nav>
+      <p>
+        Take your time.
+        <br />
+        Understanding grows here.
+      </p>
+    </aside>
+    <article>
+      <header class="lesson-heading">
+        <p class="eyebrow">
+          LESSON {String(index + 1).padStart(2, "0")} OF 08{" "}
+          <span> / {lesson.minutes} MIN READ</span>
+        </p>
+        <h1>{lesson.title}</h1>
+        <p>{lesson.subtitle}</p>
+      </header>
+      <div class="prose">
+        <Content />
+      </div>
+      {[2, 3].includes(index) && <Demo kind="rebuild" />}
+      {[4, 5].includes(index) && <Demo kind="rotations" />}
+      {index === 6 && <Demo kind="compare" />}
+      <nav class="lesson-pagination" aria-label="Previous and next lesson">
+        {index > 0 ? (
+          <a href={`/lessons/${lessons[index - 1].slug}/`}>
+            <small>← PREVIOUS</small>
+            {lessons[index - 1].title}
+          </a>
+        ) : (
+          <a href="/#course">
+            <small>← OVERVIEW</small>The course
+          </a>
+        )}
+        {index < 7 ? (
+          <a href={`/lessons/${lessons[index + 1].slug}/`}>
+            <small>NEXT →</small>
+            {lessons[index + 1].title}
+          </a>
+        ) : (
+          <a href="/#course">
+            <small>BACK TO THE COURSE ↗</small>Keep experimenting
+          </a>
+        )}
+      </nav>
+    </article>
+  </div>
+</Layout>

@@ -1,0 +1,116 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Demo from "../components/Demo.astro";
+import { lessons } from "../lib/course";
+---
+
+<Layout title="Make sense of trees">
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">A FIELD GUIDE TO BINARY SEARCH TREES</p>
+      <h1>
+        Good things
+        <br />
+        grow in <em>balance.</em>
+      </h1>
+      <p class="intro">
+        A tree can make searching feel effortless. Or turn it into a very long
+        walk. Let’s find out why—and learn how a few small moves change
+        everything.
+      </p>
+      <a class="primary" href="/lessons/01-trees/">
+        Begin the journey <span>↗</span>
+      </a>
+      <p class="micro">8 lessons · Interactive by design · Python included</p>
+    </div>
+    <div
+      class="hero-art"
+      aria-label="A balanced tree with root 40, children 20 and 60, and leaves 10, 30, 50, 70"
+    >
+      <span class="art-label">SAME VALUES. A BETTER SHAPE.</span>
+      <svg viewBox="0 0 460 370" role="img">
+        <title>A balanced seven-node binary search tree</title>
+        <g class="hero-links">
+          <path d="M230 65L125 170 M230 65L335 170 M125 170L65 275 M125 170L185 275 M335 170L275 275 M335 170L395 275" />
+        </g>
+        {[
+          [230, 65, 40],
+          [125, 170, 20],
+          [335, 170, 60],
+          [65, 275, 10],
+          [185, 275, 30],
+          [275, 275, 50],
+          [395, 275, 70],
+        ].map(([x, y, k], i) => (
+          <g class:list={["hero-node", { accent: i === 0 }]}>
+            <circle cx={x} cy={y} r={i === 0 ? 32 : 27} />
+            <text x={x} y={y + 7} text-anchor="middle">
+              {k}
+            </text>
+          </g>
+        ))}
+      </svg>
+      <span class="art-note">Seven values. Just three levels.</span>
+    </div>
+  </section>
+  <section class="opening">
+    <p class="eyebrow">FIRST, AN INTUITION</p>
+    <h2>
+      It’s not just what you store.
+      <br />
+      It’s how you arrange it.
+    </h2>
+    <p>
+      Imagine looking for a name in a stack of unsorted cards. You might read
+      every card. Give those cards a little structure, and each decision can
+      rule out a whole group. A search tree makes that idea tangible.
+    </p>
+    <p>
+      We’ll start with paths and relationships, watch an ordinary tree lose its
+      shape, then discover how AVL trees keep those paths short. The code comes
+      after the idea clicks.
+    </p>
+  </section>
+  <section id="course" class="course">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">THE COURSE</p>
+        <h2>
+          From first branch
+          <br />
+          to balanced tree.
+        </h2>
+      </div>
+      <p>
+        Read in order. Pause to experiment.
+        <br />
+        Every lesson builds on the last.
+      </p>
+    </div>
+    <div class="lesson-list">
+      {lessons.map((l, i) => (
+        <a href={`/lessons/${l.slug}/`}>
+          <span class="lesson-number">{String(i + 1).padStart(2, "0")}</span>
+          <div>
+            <h3>{l.title}</h3>
+            <p>{l.subtitle}</p>
+          </div>
+          <span class="duration">{l.minutes} min</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      ))}
+    </div>
+  </section>
+  <section class="preview">
+    <p class="eyebrow">A LITTLE PREVIEW</p>
+    <h2>Watch order become imbalance.</h2>
+    <p>
+      Give both trees 10, 20, 30, 40, 50, 60, 70. One keeps growing sideways.
+      The other makes room.
+    </p>
+    <Demo kind="compare" />
+    <a class="text-link" href="/lessons/07-unwind/">
+      Understand what’s happening →
+    </a>
+  </section>
+</Layout>
