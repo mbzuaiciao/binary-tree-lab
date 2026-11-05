@@ -1,0 +1,51 @@
+---
+interface Props {
+  kind: "rebuild" | "rotations" | "compare";
+}
+const { kind } = Astro.props;
+---
+
+<section
+  class="demo"
+  data-demo={kind}
+  aria-label={`${kind} interactive demonstration`}
+>
+  <noscript>
+    <p>
+      Enable JavaScript to explore this lab. The lesson above explains each
+      operation without animation.
+    </p>
+  </noscript>
+  <div class="demo-top">
+    <span class="eyebrow">INTERACTIVE LAB</span>
+    <span class="step-count"></span>
+  </div>
+  {kind === "rotations" && (
+    <div class="cases" role="group" aria-label="Rotation case">
+      {["LL", "RR", "LR", "RL"].map((c) => (
+        <button data-case={c} aria-pressed={c === "LL"}>
+          {c}
+        </button>
+      ))}
+    </div>
+  )}
+  <div class:list={["graphs", { paired: kind === "compare" }]}></div>
+  <div class="collected"></div>
+  <p class="caption" aria-live="polite" aria-atomic="true"></p>
+  <div class="controls">
+    <button data-action="back" aria-label="Previous step">
+      ← Back
+    </button>
+    <button data-action="step">Step →</button>
+    <button data-action="play">Play</button>
+    <button data-action="reset">Reset</button>
+  </div>
+  <p class="legend">
+    <span class="dot"></span> Current operation · h = height · b = left height −
+    right height
+  </p>
+</section>
+<script>
+  import { initDemos } from "../lib/demo";
+  initDemos();
+</script>
